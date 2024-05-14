@@ -1,11 +1,11 @@
 local httpService = game:GetService('HttpService')
-
+if not isfolder("cattohook") then makefolder("cattohook") end
 local ThemeManager = {}
 
 do
 
-	ThemeManager.Folder = 'LinoriaLibSettings'
-	if not isfolder(ThemeManager.Folder) then makefolder(ThemeManager.Folder) end
+	ThemeManager.Folder = 'cattohook'
+
 	
 
 	ThemeManager.Library = nil
