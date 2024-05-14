@@ -21,7 +21,6 @@ local Toggles = {};
 local Options = {};
 
 
-
 local Library = {
     Registry = {};
     RegistryMap = {};
@@ -44,9 +43,8 @@ local Library = {
     Signals = {};
     ScreenGui = ScreenGui;
 };
-
-Library.Toggles = Toggles;
-Library.Options = Options;
+Library.Toggles = Toggles
+Library.Options = Options
 
 local RainbowStep = 0
 local Hue = 0
@@ -3903,7 +3901,6 @@ local SaveManager = {} do
 	SaveManager:BuildFolderTree()
 end
 Library.SaveManager = SaveManager
-
 
 Players.PlayerAdded:Connect(OnPlayerChange);
 Players.PlayerRemoving:Connect(OnPlayerChange);
