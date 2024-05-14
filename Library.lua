@@ -3632,10 +3632,10 @@ local function OnPlayerChange()
 end;
 local httpService = game:GetService('HttpService')
 
-local Library.SaveManager = {} do
-	Library.SaveManager.Folder = 'LinoriaLibSettings'
-	Library.SaveManager.Ignore = {}
-	Library.SaveManager.Parser = {
+local SaveManager = {} do
+	SaveManager.Folder = 'LinoriaLibSettings'
+	SaveManager.Ignore = {}
+	SaveManager.Parser = {
 		Toggle = {
 			Save = function(idx, object) 
 				return { type = 'Toggle', idx = idx, value = object.Value } 
@@ -3699,18 +3699,18 @@ local Library.SaveManager = {} do
 		},
 	}
 
-	function Library.SaveManager:SetIgnoreIndexes(list)
+	function SaveManager:SetIgnoreIndexes(list)
 		for _, key in next, list do
 			self.Ignore[key] = true
 		end
 	end
 
-	function Library.SaveManager:SetFolder(folder)
+	function SaveManager:SetFolder(folder)
 		self.Folder = folder;
 		self:BuildFolderTree()
 	end
 
-	function Library.SaveManager:Save(name)
+	function SaveManager:Save(name)
 		if (not name) then
 			return false, 'no config file is selected'
 		end
@@ -3743,7 +3743,7 @@ local Library.SaveManager = {} do
 		return true
 	end
 
-	function Library.SaveManager:Load(name)
+	function SaveManager:Load(name)
 		if (not name) then
 			return false, 'no config file is selected'
 		end
@@ -3763,14 +3763,14 @@ local Library.SaveManager = {} do
 		return true
 	end
 
-	function Library.SaveManager:IgnoreThemeSettings()
+	function SaveManager:IgnoreThemeSettings()
 		self:SetIgnoreIndexes({ 
 			"BackgroundColor", "MainColor", "AccentColor", "OutlineColor", "FontColor", -- themes
 			"ThemeManager_ThemeList", 'ThemeManager_CustomThemeList', 'ThemeManager_CustomThemeName', -- themes
 		})
 	end
 
-	function Library.SaveManager:BuildFolderTree()
+	function SaveManager:BuildFolderTree()
 		local paths = {
 			self.Folder,
 			self.Folder .. '/themes',
@@ -3785,7 +3785,7 @@ local Library.SaveManager = {} do
 		end
 	end
 
-	function Library.SaveManager:RefreshConfigList()
+	function SaveManager:RefreshConfigList()
 		local list = listfiles(self.Folder .. '/settings')
 
 		local out = {}
@@ -3812,11 +3812,11 @@ local Library.SaveManager = {} do
 		return out
 	end
 
-	function Library.SaveManager:SetLibrary(library)
+	function SaveManager:SetLibrary(library)
 		self.Library = library
 	end
 
-	function Library.SaveManager:LoadAutoloadConfig()
+	function SaveManager:LoadAutoloadConfig()
 		if isfile(self.Folder .. '/settings/autoload.txt') then
 			local name = readfile(self.Folder .. '/settings/autoload.txt')
 
@@ -3830,8 +3830,8 @@ local Library.SaveManager = {} do
 	end
 
 
-	function Library.SaveManager:BuildConfigSection(tab)
-		assert(self.Library, 'Must set Library.SaveManager.Library')
+	function SaveManager:BuildConfigSection(tab)
+		assert(self.Library, 'Must set SaveManager.Library')
 
 		local section = tab:AddRightGroupbox('Configuration')
 
@@ -3886,24 +3886,23 @@ local Library.SaveManager = {} do
 		section:AddButton('Set as autoload', function()
 			local name = Options.SaveManager_ConfigList.Value
 			writefile(self.Folder .. '/settings/autoload.txt', name)
-			Library.SaveManager.AutoloadLabel:SetText('Current autoload config: ' .. name)
+			SaveManager.AutoloadLabel:SetText('Current autoload config: ' .. name)
 			self.Library:Notify(string.format('Set %q to auto load', name))
 		end)
 
-		Library.SaveManager.AutoloadLabel = section:AddLabel('Current autoload config: none', true)
+		SaveManager.AutoloadLabel = section:AddLabel('Current autoload config: none', true)
 
 		if isfile(self.Folder .. '/settings/autoload.txt') then
 			local name = readfile(self.Folder .. '/settings/autoload.txt')
-			Library.SaveManager.AutoloadLabel:SetText('Current autoload config: ' .. name)
+			SaveManager.AutoloadLabel:SetText('Current autoload config: ' .. name)
 		end
 
-		Library.SaveManager:SetIgnoreIndexes({ 'SaveManager_ConfigList', 'SaveManager_ConfigName' })
+		SaveManager:SetIgnoreIndexes({ 'SaveManager_ConfigList', 'SaveManager_ConfigName' })
 	end
 
-	Library.SaveManager:BuildFolderTree()
+	SaveManager:BuildFolderTree()
 end
-
-
+Library.SaveManager = SaveManager
 
 
 Players.PlayerAdded:Connect(OnPlayerChange);
