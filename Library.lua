@@ -20,8 +20,7 @@ ScreenGui.Parent = CoreGui;
 local Toggles = {};
 local Options = {};
 
-_G.Toggles = Toggles;
-_G.Options = Options;
+
 
 local Library = {
     Registry = {};
@@ -45,6 +44,9 @@ local Library = {
     Signals = {};
     ScreenGui = ScreenGui;
 };
+
+Library.Toggles = Toggles;
+Library.Options = Options;
 
 local RainbowStep = 0
 local Hue = 0
