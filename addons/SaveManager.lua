@@ -1,7 +1,7 @@
 local httpService = game:GetService('HttpService')
-
+if not isfolder("cattohook") then makefolder("cattohook") end
 local SaveManager = {} do
-	SaveManager.Folder = 'LinoriaLibSettings'
+	SaveManager.Folder = 'cattohook'
 	SaveManager.Ignore = {}
 	SaveManager.Parser = {
 		Toggle = {
