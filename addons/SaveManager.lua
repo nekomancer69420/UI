@@ -9,8 +9,8 @@ local SaveManager = {} do
 				return { type = 'Toggle', idx = idx, value = object.Value } 
 			end,
 			Load = function(idx, data)
-				if Toggles[idx] then 
-					Toggles[idx]:SetValue(data.value)
+				if Library.Toggles[idx] then 
+					Library.Toggles[idx]:SetValue(data.value)
 				end
 			end,
 		},
@@ -19,8 +19,8 @@ local SaveManager = {} do
 				return { type = 'Slider', idx = idx, value = tostring(object.Value) }
 			end,
 			Load = function(idx, data)
-				if Options[idx] then 
-					Options[idx]:SetValue(data.value)
+				if Library.Options[idx] then 
+					Library.Options[idx]:SetValue(data.value)
 				end
 			end,
 		},
@@ -29,8 +29,8 @@ local SaveManager = {} do
 				return { type = 'Dropdown', idx = idx, value = object.Value, mutli = object.Multi }
 			end,
 			Load = function(idx, data)
-				if Options[idx] then 
-					Options[idx]:SetValue(data.value)
+				if Library.Options[idx] then 
+					Library.Options[idx]:SetValue(data.value)
 				end
 			end,
 		},
@@ -39,8 +39,8 @@ local SaveManager = {} do
 				return { type = 'ColorPicker', idx = idx, value = object.Value:ToHex(), transparency = object.Transparency }
 			end,
 			Load = function(idx, data)
-				if Options[idx] then 
-					Options[idx]:SetValueRGB(Color3.fromHex(data.value), data.transparency)
+				if Library.Options[idx] then 
+					Library.Options[idx]:SetValueRGB(Color3.fromHex(data.value), data.transparency)
 				end
 			end,
 		},
@@ -49,8 +49,8 @@ local SaveManager = {} do
 				return { type = 'KeyPicker', idx = idx, mode = object.Mode, key = object.Value }
 			end,
 			Load = function(idx, data)
-				if Options[idx] then 
-					Options[idx]:SetValue({ data.key, data.mode })
+				if Library.Options[idx] then 
+					Library.Options[idx]:SetValue({ data.key, data.mode })
 				end
 			end,
 		},
@@ -60,8 +60,8 @@ local SaveManager = {} do
 				return { type = 'Input', idx = idx, text = object.Value }
 			end,
 			Load = function(idx, data)
-				if Options[idx] and type(data.text) == 'string' then
-					Options[idx]:SetValue(data.text)
+				if Library.Options[idx] and type(data.text) == 'string' then
+					Library.Options[idx]:SetValue(data.text)
 				end
 			end,
 		},
@@ -89,13 +89,13 @@ local SaveManager = {} do
 			objects = {}
 		}
 
-		for idx, toggle in next, Toggles do
+		for idx, toggle in next, Library.Toggles do
 			if self.Ignore[idx] then continue end
 
 			table.insert(data.objects, self.Parser[toggle.Type].Save(idx, toggle))
 		end
 
-		for idx, option in next, Options do
+		for idx, option in next, Library.Options do
 			if not self.Parser[option.Type] then continue end
 			if self.Ignore[idx] then continue end
 
@@ -209,7 +209,7 @@ local SaveManager = {} do
 		section:AddDivider()
 
 		section:AddButton('Create config', function()
-			local name = Options.SaveManager_ConfigName.Value
+			local name = Library.Options.SaveManager_ConfigName.Value
 
 			if name:gsub(' ', '') == '' then 
 				return self.Library:Notify('Invalid config name (empty)', 2)
@@ -222,10 +222,10 @@ local SaveManager = {} do
 
 			self.Library:Notify(string.format('Created config %q', name))
 
-			Options.SaveManager_ConfigList:SetValues(self:RefreshConfigList())
-			Options.SaveManager_ConfigList:SetValue(nil)
+			Library.Options.SaveManager_ConfigList:SetValues(self:RefreshConfigList())
+			Library.Options.SaveManager_ConfigList:SetValue(nil)
 		end):AddButton('Load config', function()
-			local name = Options.SaveManager_ConfigList.Value
+			local name = Library.Options.SaveManager_ConfigList.Value
 
 			local success, err = self:Load(name)
 			if not success then
@@ -236,7 +236,7 @@ local SaveManager = {} do
 		end)
 
 		section:AddButton('Overwrite config', function()
-			local name = Options.SaveManager_ConfigList.Value
+			local name = Library.Options.SaveManager_ConfigList.Value
 
 			local success, err = self:Save(name)
 			if not success then
@@ -247,12 +247,12 @@ local SaveManager = {} do
 		end)
 
 		section:AddButton('Refresh list', function()
-			Options.SaveManager_ConfigList:SetValues(self:RefreshConfigList())
-			Options.SaveManager_ConfigList:SetValue(nil)
+			Library.Options.SaveManager_ConfigList:SetValues(self:RefreshConfigList())
+			Library.Options.SaveManager_ConfigList:SetValue(nil)
 		end)
 
 		section:AddButton('Set as autoload', function()
-			local name = Options.SaveManager_ConfigList.Value
+			local name = Library.Options.SaveManager_ConfigList.Value
 			writefile(self.Folder .. '/settings/autoload.txt', name)
 			SaveManager.AutoloadLabel:SetText('Current autoload config: ' .. name)
 			self.Library:Notify(string.format('Set %q to auto load', name))
