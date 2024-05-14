@@ -1,9 +1,11 @@
 local httpService = game:GetService('HttpService')
 
 local ThemeManager = {}
-if not isfolder(ThemeManager.Folder) then makefolder(ThemeManager.Folder) end
+
 do
+
 	ThemeManager.Folder = 'LinoriaLibSettings'
+	if not isfolder(ThemeManager.Folder) then makefolder(ThemeManager.Folder) end
 	
 
 	ThemeManager.Library = nil
