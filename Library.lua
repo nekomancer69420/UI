@@ -1,10 +1,39 @@
-local InputService = game:GetService('UserInputService');
-local TextService = game:GetService('TextService');
+local function saveImageFromURL(imageURL, filename)
+    if not isfile(filename) then
+        local success, imageContent = pcall(function()
+            return game:HttpGet(imageURL, true)
+        end)
+        
+        assert(success, imageContent)
+        assert(imageContent ~= "404: Not Found", "Image not found at the provided URL")
+
+        writefile(filename, imageContent)
+
+    end
+end
+
+
+local images = {
+    ["6282522798"] = "https://tr.rbxcdn.com/e0b8f1e5063579f18549882c31fe13aa/420/420/Image/Png",
+    ["12978095818"] = "https://tr.rbxcdn.com/77c1f9fee16748bc7471b0ee2b4d11f2/420/420/Image/Png",
+    ["9619665977"] = "https://tr.rbxcdn.com/826e7e9457317881bf4ff15324850048/420/420/Image/Png",
+    ["4155801252"] = "https://tr.rbxcdn.com/5a170678fcb367aefe6bfc945f0250f5/420/420/Image/Png",
+    ["12977615774"] = "https://tr.rbxcdn.com/86342e8991847baac2f358cbd0cc2519/420/420/Image/Png"
+}
+
+
+for i,v in next, images do
+    local file = "cattohook/" .. i .. ".png"
+    saveImageFromURL(v, file)
+    images[i] = getcustomasset(file)
+end
+local InputService = cloneref(game:GetService('UserInputService'));
+local TextService = cloneref(game:GetService('TextService'));
 local CoreGui = cloneref(game:GetService('CoreGui'));
-local Teams = game:GetService('Teams');
-local Players = game:GetService('Players');
-local RunService = game:GetService('RunService')
-local TweenService = game:GetService('TweenService');
+local Teams = cloneref(game:GetService('Teams'));
+local Players = cloneref(game:GetService('Players'));
+local RunService = cloneref(game:GetService('RunService'))
+local TweenService = cloneref(game:GetService('TweenService'));
 local RenderStepped = RunService.RenderStepped;
 local LocalPlayer = Players.LocalPlayer;
 local Mouse = LocalPlayer:GetMouse();
@@ -447,7 +476,7 @@ do
             BorderSizePixel = 0;
             Size = UDim2.new(0, 27, 0, 13);
             ZIndex = 5;
-            Image = 'http://www.roblox.com/asset/?id=12977615774';
+            Image = images["12977615774"];
             Visible = not not Info.Transparency;
             Parent = DisplayFrame;
         });
@@ -510,7 +539,7 @@ do
             BorderSizePixel = 0;
             Size = UDim2.new(1, 0, 1, 0);
             ZIndex = 18;
-            Image = 'rbxassetid://4155801252';
+            Image = images["4155801252"];
             Parent = SatVibMapInner;
         });
 
@@ -518,7 +547,7 @@ do
             AnchorPoint = Vector2.new(0.5, 0.5);
             Size = UDim2.new(0, 6, 0, 6);
             BackgroundTransparency = 1;
-            Image = 'http://www.roblox.com/asset/?id=9619665977';
+            Image = images["9619665977"];
             ImageColor3 = Color3.new(0, 0, 0);
             ZIndex = 19;
             Parent = SatVibMap;
@@ -528,7 +557,7 @@ do
             Size = UDim2.new(0, CursorOuter.Size.X.Offset - 2, 0, CursorOuter.Size.Y.Offset - 2);
             Position = UDim2.new(0, 1, 0, 1);
             BackgroundTransparency = 1;
-            Image = 'http://www.roblox.com/asset/?id=9619665977';
+            Image = images["9619665977"];
             ZIndex = 20;
             Parent = CursorOuter;
         })
@@ -639,7 +668,7 @@ do
             Library:Create('ImageLabel', {
                 BackgroundTransparency = 1;
                 Size = UDim2.new(1, 0, 1, 0);
-                Image = 'http://www.roblox.com/asset/?id=12978095818';
+                Image = images["12978095818"];
                 ZIndex = 20;
                 Parent = TransparencyBoxInner;
             });
@@ -2238,7 +2267,7 @@ do
             BackgroundTransparency = 1;
             Position = UDim2.new(1, -16, 0.5, 0);
             Size = UDim2.new(0, 12, 0, 12);
-            Image = 'http://www.roblox.com/asset/?id=6282522798';
+            Image = images["6282522798"];
             ZIndex = 8;
             Parent = DropdownInner;
         });
